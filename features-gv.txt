@@ -35,11 +35,11 @@ Peak RPM Control
 Blackout Plates
 Hide Plates
 Wheelie, Stoppie, Arab Tilt
+Angle Adjuster
 
 - Camera
 Advanced Dashcam Adjuster
 Hide UIs
 
 - Farm
-Roadmap and Sahara Loader
 Anti-AFK
