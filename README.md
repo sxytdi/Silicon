@@ -1,2 +1,1 @@
 # Silicon Services
-**By sxytdi**
