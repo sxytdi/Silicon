@@ -39,7 +39,6 @@ Converted["_Border"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Border"].BorderSizePixel = 0
 Converted["_Border"].Position = UDim2.new(0, 0, 0.3, 0)
 Converted["_Border"].Size = UDim2.new(0, 564, 0, 1)
-Converted["_Border"].Name = "Border"
 Converted["_Border"].Parent = Converted["_Load Screen"]
 
 Converted["_Title"].Font = Enum.Font.GothamBold
@@ -47,17 +46,12 @@ Converted["_Title"].Text = "Silicon Loader V1"
 Converted["_Title"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Title"].TextSize = 40
 Converted["_Title"].BackgroundTransparency = 1
-Converted["_Title"].Name = "Title"
+Converted["_Title"].Size = UDim2.new(0, 565, 0, 64)
 Converted["_Title"].Parent = Converted["_Load Screen"]
 
-Converted["_Creds"].Font = Enum.Font.GothamBold
-Converted["_Creds"].TextColor3 = Color3.fromRGB(255, 255, 255)
-Converted["_Creds"].TextSize = 20
 Converted["_Creds"].BackgroundTransparency = 1
-Converted["_Creds"].BorderSizePixel = 0
+Converted["_Creds"].Position = UDim2.new(0, 0, 0.31, 0)
 Converted["_Creds"].Size = UDim2.new(0, 565, 0, 69)
-Converted["_Creds"].Position = UDim2.new(-0.00176850287, 0, 0.306976736, 0)
-Converted["_Creds"].Name = "Credits"
 Converted["_Creds"].Parent = Converted["_Load Screen"]
 
 Converted["_Cred 2"].Font = Enum.Font.GothamBold
@@ -66,7 +60,7 @@ Converted["_Cred 2"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Cred 2"].TextSize = 20
 Converted["_Cred 2"].BackgroundTransparency = 1
 Converted["_Cred 2"].Position = UDim2.new(0, 0, 0, 0)
-Converted["_Cred 2"].Name = "DevInfo"
+Converted["_Cred 2"].Size = UDim2.new(0, 565, 0, 35)
 Converted["_Cred 2"].Parent = Converted["_Creds"]
 
 Converted["_Cred"].Font = Enum.Font.GothamBold
@@ -75,7 +69,7 @@ Converted["_Cred"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Cred"].TextSize = 20
 Converted["_Cred"].BackgroundTransparency = 1
 Converted["_Cred"].Position = UDim2.new(0, 0, 0.5, 0)
-Converted["_Cred"].Name = "UpdateInfo"
+Converted["_Cred"].Size = UDim2.new(0, 565, 0, 35)
 Converted["_Cred"].Parent = Converted["_Creds"]
 
 Converted["_TextButton"].Font = Enum.Font.GothamBold
@@ -85,7 +79,6 @@ Converted["_TextButton"].TextSize = 30
 Converted["_TextButton"].BackgroundColor3 = Color3.fromRGB(0, 150, 215)
 Converted["_TextButton"].Position = UDim2.new(0.32, 0, 0.67, 0)
 Converted["_TextButton"].Size = UDim2.new(0, 200, 0, 50)
-Converted["_TextButton"].Name = "LoadButton"
 Converted["_TextButton"].Parent = Converted["_Load Screen"]
 
 Converted["_UICorner1"].Parent = Converted["_TextButton"]
@@ -119,4 +112,33 @@ Converted["_TextButton"].MouseButton1Click:Connect(function()
 	elseif game.PlaceId == 72712036210947 then
 		loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/e41f0794d595dbe9e8802c3427d77558.lua"))()
 	end
+
+	Converted["_TextButton"].Text = "Loading..."
+	Converted["_TextButton"].Active = false
+
+	task.wait(2)
+
+	local slideOut = TweenService:Create(
+		Converted["_Load Screen"],
+		TweenInfo.new(0.7, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+		{
+			Position = UDim2.new(-1, 0, 0.5, 0),
+			BackgroundTransparency = 1
+		}
+	)
+
+	for _, obj in pairs(Converted["_Load Screen"]:GetDescendants()) do
+		if obj:IsA("TextLabel") or obj:IsA("TextButton") then
+			TweenService:Create(obj, TweenInfo.new(0.7), {TextTransparency = 1}):Play()
+			if obj:IsA("TextButton") then
+				TweenService:Create(obj, TweenInfo.new(0.7), {BackgroundTransparency = 1}):Play()
+			end
+		elseif obj:IsA("Frame") then
+			TweenService:Create(obj, TweenInfo.new(0.7), {BackgroundTransparency = 1}):Play()
+		end
+	end
+
+	slideOut:Play()
+	slideOut.Completed:Wait()
+	Converted["_Load Screen"]:Destroy()
 end)
