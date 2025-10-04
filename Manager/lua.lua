@@ -119,5 +119,6 @@ Converted["_TextButton"].MouseButton1Click:Connect(function()
 	elseif game.PlaceId == 72712036210947 then
 		loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/e41f0794d595dbe9e8802c3427d77558.lua"))()
 	end
+    task.wait(2)
 	slideOut.Completed:Wait()
 end)
