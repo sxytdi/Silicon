@@ -1,5 +1,3 @@
--- Generated using RoadToGlory's Converter v1.1 (RoadToGlory#9879)
-
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
@@ -100,15 +98,14 @@ local executorWhitelist = {
 Converted["_TextButton"].MouseButton1Click:Connect(function()
 	Converted["_TextButton"].Text = "Loading..."
 	Converted["_TextButton"].Active = false
-	task.wait(2)
-	local slideOut = TweenService:Create(
+    task.wait(2)
+    local slideOut = TweenService:Create(
 		Converted["_Load Screen"],
 		TweenInfo.new(0.7, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
 		{Position = UDim2.new(-1, 0, 0.5, 0)}
 	)
 	slideOut:Play()
-	slideOut.Completed:Wait()
-	local success, executorName = pcall(identifyexecutor)
+    local success, executorName = pcall(identifyexecutor)
 	if not (success and executorName and executorWhitelist[executorName]) then
 		player:Kick("Unsupported executor: "..tostring(executorName))
 		return
@@ -122,4 +119,5 @@ Converted["_TextButton"].MouseButton1Click:Connect(function()
 	elseif game.PlaceId == 72712036210947 then
 		loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/e41f0794d595dbe9e8802c3427d77558.lua"))()
 	end
+	slideOut.Completed:Wait()
 end)
