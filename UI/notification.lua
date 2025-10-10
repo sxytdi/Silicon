@@ -18,8 +18,25 @@ function Silicon:Notify(tbl)
     BG.Size = UDim2.new(0, 300, 0, 100)
 
     local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 8)
+    Corner.CornerRadius = UDim.new(0, 10)
     Corner.Parent = BG
+
+    local mask = Instance.new("Frame")
+    mask.Parent = BG
+    mask.BackgroundTransparency = 1
+    mask.Size = UDim2.new(1, 0, 1, 0)
+    mask.ClipsDescendants = true
+
+    local topCorners = Instance.new("UICorner")
+    topCorners.CornerRadius = UDim.new(0, 10)
+    topCorners.Parent = mask
+
+    local clipFrame = Instance.new("Frame")
+    clipFrame.Parent = mask
+    clipFrame.BackgroundTransparency = 1
+    clipFrame.Position = UDim2.new(0, 0, 0.05, 0)
+    clipFrame.Size = UDim2.new(1, 0, 0.95, 0)
+    clipFrame.ClipsDescendants = true
 
     local Shadow = Instance.new("ImageLabel")
     Shadow.Parent = BG
@@ -43,7 +60,7 @@ function Silicon:Notify(tbl)
     local Title = Instance.new("TextLabel")
     Title.Parent = BG
     Title.BackgroundTransparency = 1
-    Title.Position = UDim2.new(0.35, -10, 0.33, 0)
+    Title.Position = UDim2.new(0.33, -15, 0.35, 0)
     Title.Size = UDim2.new(0, 180, 0, 25)
     Title.Font = Enum.Font.GothamBold
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -54,7 +71,7 @@ function Silicon:Notify(tbl)
     local Description = Instance.new("TextLabel")
     Description.Parent = BG
     Description.BackgroundTransparency = 1
-    Description.Position = UDim2.new(0.35, -10, 0.58, 0)
+    Description.Position = UDim2.new(0.33, -15, 0.58, 0)
     Description.Size = UDim2.new(0, 180, 0, 22)
     Description.Font = Enum.Font.Gotham
     Description.TextColor3 = Color3.fromRGB(220, 220, 220)
