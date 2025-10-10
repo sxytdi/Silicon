@@ -26,8 +26,8 @@ function Silicon:Notify(tbl)
     local Title = Instance.new("TextLabel")
     Title.Parent = BG
     Title.BackgroundTransparency = 1
-    Title.Position = UDim2.new(0.33, 0, 0.25, 0)
-    Title.Size = UDim2.new(0, 180, 0, 28)
+    Title.Position = UDim2.new(0.33, 0, 0.35, 0)
+    Title.Size = UDim2.new(0, 180, 0, 25)
     Title.Font = Enum.Font.GothamBold
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 20
@@ -37,8 +37,8 @@ function Silicon:Notify(tbl)
     local Description = Instance.new("TextLabel")
     Description.Parent = BG
     Description.BackgroundTransparency = 1
-    Description.Position = UDim2.new(0.33, 0, 0.6, 0)
-    Description.Size = UDim2.new(0, 180, 0, 24)
+    Description.Position = UDim2.new(0.33, 0, 0.55, 0)
+    Description.Size = UDim2.new(0, 180, 0, 22)
     Description.Font = Enum.Font.Gotham
     Description.TextColor3 = Color3.fromRGB(255, 255, 255)
     Description.TextSize = 17
