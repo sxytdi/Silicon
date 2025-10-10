@@ -1,4 +1,3 @@
--- Silicon Notification System
 local Silicon = {}
 
 function Silicon:Notify(tbl)
@@ -27,8 +26,8 @@ function Silicon:Notify(tbl)
     local Title = Instance.new("TextLabel")
     Title.Parent = BG
     Title.BackgroundTransparency = 1
-    Title.Position = UDim2.new(0.33, 0, 0.1, 0)
-    Title.Size = UDim2.new(0, 180, 0, 40)
+    Title.Position = UDim2.new(0.33, 0, 0.25, 0)
+    Title.Size = UDim2.new(0, 180, 0, 28)
     Title.Font = Enum.Font.GothamBold
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 20
@@ -38,11 +37,11 @@ function Silicon:Notify(tbl)
     local Description = Instance.new("TextLabel")
     Description.Parent = BG
     Description.BackgroundTransparency = 1
-    Description.Position = UDim2.new(0.33, 0, 0.5, 0)
-    Description.Size = UDim2.new(0, 180, 0, 40)
+    Description.Position = UDim2.new(0.33, 0, 0.6, 0)
+    Description.Size = UDim2.new(0, 180, 0, 24)
     Description.Font = Enum.Font.Gotham
     Description.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Description.TextSize = 18
+    Description.TextSize = 17
     Description.TextXAlignment = Enum.TextXAlignment.Left
     Description.Text = ContentText
 
@@ -55,27 +54,15 @@ function Silicon:Notify(tbl)
 
     local TweenService = game:GetService("TweenService")
 
-    local slideIn = TweenService:Create(
-        BG,
-        TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-        {Position = UDim2.new(1, -20, 1, -20)}
-    )
+    local slideIn = TweenService:Create(BG, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(1, -20, 1, -20)})
     slideIn:Play()
 
-    local barTween = TweenService:Create(
-        Bar,
-        TweenInfo.new(3, Enum.EasingStyle.Linear),
-        {Size = UDim2.new(1, 0, 0, 2)}
-    )
+    local barTween = TweenService:Create(Bar, TweenInfo.new(3, Enum.EasingStyle.Linear), {Size = UDim2.new(1, 0, 0, 2)})
     barTween:Play()
 
     task.wait(3.8)
 
-    local slideOut = TweenService:Create(
-        BG,
-        TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
-        {Position = UDim2.new(1, 320, 1, -20)}
-    )
+    local slideOut = TweenService:Create(BG, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Position = UDim2.new(1, 320, 1, -20)})
     slideOut:Play()
 
     slideOut.Completed:Connect(function()
