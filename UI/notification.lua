@@ -42,24 +42,28 @@ function Silicon:Notify(tbl)
     Title.Parent = BG
     Title.BackgroundTransparency = 1
     Title.Position = UDim2.new(0.33, -15, 0.24, 0)
-    Title.Size = UDim2.new(0, 180, 0, 26)
+    Title.Size = UDim2.new(0, 180, 0, 30)
     Title.Font = Enum.Font.GothamBold
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextTransparency = 0.05
     Title.TextSize = 20
     Title.TextXAlignment = Enum.TextXAlignment.Left
+    Title.TextYAlignment = Enum.TextYAlignment.Top
+    Title.TextWrapped = true
     Title.Text = TitleText
 
     local Description = Instance.new("TextLabel")
     Description.Parent = BG
     Description.BackgroundTransparency = 1
     Description.Position = UDim2.new(0.33, -15, 0.46, 0)
-    Description.Size = UDim2.new(0, 180, 0, 22)
+    Description.Size = UDim2.new(0, 180, 0, 40)
     Description.Font = Enum.Font.GothamMedium
     Description.TextColor3 = Color3.fromRGB(210, 210, 210)
     Description.TextTransparency = 0.1
     Description.TextSize = 16
     Description.TextXAlignment = Enum.TextXAlignment.Left
+    Description.TextYAlignment = Enum.TextYAlignment.Top
+    Description.TextWrapped = true
     Description.Text = ContentText
 
     local Bar = Instance.new("Frame")
@@ -81,6 +85,16 @@ function Silicon:Notify(tbl)
     Shadow.ScaleType = Enum.ScaleType.Slice
     Shadow.SliceCenter = Rect.new(10, 10, 118, 118)
     Shadow.ZIndex = 0
+
+    -- Auto-wrap behavior: adjusts frame height if text expands
+    local function adjustSize()
+        local neededHeight = math.max(100, Title.TextBounds.Y + Description.TextBounds.Y + 40)
+        BG.Size = UDim2.new(0, 300, 0, neededHeight)
+    end
+
+    Title:GetPropertyChangedSignal("TextBounds"):Connect(adjustSize)
+    Description:GetPropertyChangedSignal("TextBounds"):Connect(adjustSize)
+    adjustSize()
 
     local TweenService = game:GetService("TweenService")
 
