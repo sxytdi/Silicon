@@ -11,7 +11,7 @@ function Silicon:Notify(tbl)
 
     local BG = Instance.new("Frame")
     BG.Parent = gui
-    BG.BackgroundColor3 = Color3.fromRGB(28, 28, 33)
+    BG.BackgroundColor3 = Color3.fromRGB(24, 24, 28)
     BG.BorderSizePixel = 0
     BG.AnchorPoint = Vector2.new(1, 1)
     BG.Position = UDim2.new(1, 320, 1, -20)
@@ -21,49 +21,31 @@ function Silicon:Notify(tbl)
     Corner.CornerRadius = UDim.new(0, 10)
     Corner.Parent = BG
 
-    local mask = Instance.new("Frame")
-    mask.Parent = BG
-    mask.BackgroundTransparency = 1
-    mask.Size = UDim2.new(1, 0, 1, 0)
-    mask.ClipsDescendants = true
-
-    local topCorners = Instance.new("UICorner")
-    topCorners.CornerRadius = UDim.new(0, 10)
-    topCorners.Parent = mask
-
-    local clipFrame = Instance.new("Frame")
-    clipFrame.Parent = mask
-    clipFrame.BackgroundTransparency = 1
-    clipFrame.Position = UDim2.new(0, 0, 0.05, 0)
-    clipFrame.Size = UDim2.new(1, 0, 0.95, 0)
-    clipFrame.ClipsDescendants = true
-
-    local Shadow = Instance.new("ImageLabel")
-    Shadow.Parent = BG
-    Shadow.BackgroundTransparency = 1
-    Shadow.Position = UDim2.new(0, -10, 0, -10)
-    Shadow.Size = UDim2.new(1, 20, 1, 20)
-    Shadow.Image = "rbxassetid://1316045217"
-    Shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    Shadow.ImageTransparency = 0.75
-    Shadow.ScaleType = Enum.ScaleType.Slice
-    Shadow.SliceCenter = Rect.new(10, 10, 118, 118)
-    Shadow.ZIndex = 0
+    local BottomMask = Instance.new("Frame")
+    BottomMask.Parent = BG
+    BottomMask.BackgroundColor3 = BG.BackgroundColor3
+    BottomMask.BorderSizePixel = 0
+    BottomMask.AnchorPoint = Vector2.new(0, 1)
+    BottomMask.Position = UDim2.new(0, 0, 1, 0)
+    BottomMask.Size = UDim2.new(1, 0, 0, 10)
+    BottomMask.ZIndex = 2
 
     local ImageLabel = Instance.new("ImageLabel")
     ImageLabel.Parent = BG
     ImageLabel.BackgroundTransparency = 1
-    ImageLabel.Size = UDim2.new(0, 80, 0, 80)
-    ImageLabel.Position = UDim2.new(0.05, 0, 0.1, 0)
+    ImageLabel.Size = UDim2.new(0, 70, 0, 70)
+    ImageLabel.Position = UDim2.new(0.07, 0, 0.15, 0)
     ImageLabel.Image = "rbxassetid://124780615486303"
+    ImageLabel.ImageTransparency = 0.05
 
     local Title = Instance.new("TextLabel")
     Title.Parent = BG
     Title.BackgroundTransparency = 1
-    Title.Position = UDim2.new(0.33, -15, 0.35, 0)
-    Title.Size = UDim2.new(0, 180, 0, 25)
+    Title.Position = UDim2.new(0.33, -15, 0.24, 0)
+    Title.Size = UDim2.new(0, 180, 0, 26)
     Title.Font = Enum.Font.GothamBold
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextTransparency = 0.05
     Title.TextSize = 20
     Title.TextXAlignment = Enum.TextXAlignment.Left
     Title.Text = TitleText
@@ -71,11 +53,12 @@ function Silicon:Notify(tbl)
     local Description = Instance.new("TextLabel")
     Description.Parent = BG
     Description.BackgroundTransparency = 1
-    Description.Position = UDim2.new(0.33, -15, 0.58, 0)
+    Description.Position = UDim2.new(0.33, -15, 0.46, 0)
     Description.Size = UDim2.new(0, 180, 0, 22)
-    Description.Font = Enum.Font.Gotham
-    Description.TextColor3 = Color3.fromRGB(220, 220, 220)
-    Description.TextSize = 17
+    Description.Font = Enum.Font.GothamMedium
+    Description.TextColor3 = Color3.fromRGB(210, 210, 210)
+    Description.TextTransparency = 0.1
+    Description.TextSize = 16
     Description.TextXAlignment = Enum.TextXAlignment.Left
     Description.Text = ContentText
 
@@ -85,10 +68,23 @@ function Silicon:Notify(tbl)
     Bar.BorderSizePixel = 0
     Bar.Position = UDim2.new(0, 0, 1, -2)
     Bar.Size = UDim2.new(0, 0, 0, 2)
+    Bar.ZIndex = 3
+
+    local Shadow = Instance.new("ImageLabel")
+    Shadow.Parent = BG
+    Shadow.BackgroundTransparency = 1
+    Shadow.Position = UDim2.new(0, -10, 0, -10)
+    Shadow.Size = UDim2.new(1, 20, 1, 20)
+    Shadow.Image = "rbxassetid://1316045217"
+    Shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    Shadow.ImageTransparency = 0.8
+    Shadow.ScaleType = Enum.ScaleType.Slice
+    Shadow.SliceCenter = Rect.new(10, 10, 118, 118)
+    Shadow.ZIndex = 0
 
     local TweenService = game:GetService("TweenService")
 
-    local slideIn = TweenService:Create(BG, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(1, -20, 1, -20)})
+    local slideIn = TweenService:Create(BG, TweenInfo.new(0.75, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(1, -20, 1, -20)})
     slideIn:Play()
 
     local barTween = TweenService:Create(Bar, TweenInfo.new(3, Enum.EasingStyle.Linear), {Size = UDim2.new(1, 0, 0, 2)})
@@ -96,7 +92,7 @@ function Silicon:Notify(tbl)
 
     task.wait(3.8)
 
-    local slideOut = TweenService:Create(BG, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Position = UDim2.new(1, 320, 1, -20)})
+    local slideOut = TweenService:Create(BG, TweenInfo.new(0.75, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Position = UDim2.new(1, 320, 1, -20)})
     slideOut:Play()
 
     slideOut.Completed:Connect(function()
