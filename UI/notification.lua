@@ -1,136 +1,86 @@
--- SiliconNotifications.lua
--- Place this ModuleScript in ReplicatedStorage (or paste into a ModuleScript named "SiliconNotifications")
-
-local TweenService = game:GetService("TweenService")
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
+-- Silicon Notification System
 local Silicon = {}
 
--- Config
-local slideDuration = 1
-local holdDuration = 3
-local barDuration = 3
-local barColorStart = Color3.fromRGB(255, 255, 255)
-local barColorEnd = Color3.fromRGB(0, 150, 215)
+function Silicon:Notify(tbl)
+    local TitleText = tbl.Title or "Notification"
+    local ContentText = tbl.Content or "No message"
 
-local disabled = false
-local filterFn = nil
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "SiliconNotifications"
+    gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- Expect a ScreenGui named "SiliconTemplate" under ReplicatedStorage
--- Structure expected:
--- SiliconTemplate (ScreenGui)
---  └ BG (Frame)
---     ├ Title (TextLabel)
---     ├ Description (TextLabel)
---     └ Bar (Frame)
-local function getTemplate()
-	return ReplicatedStorage:FindFirstChild("SiliconTemplate")
-end
+    local BG = Instance.new("Frame")
+    BG.Parent = gui
+    BG.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    BG.BorderSizePixel = 0
+    BG.AnchorPoint = Vector2.new(1, 1)
+    BG.Position = UDim2.new(1, 320, 1, -20)
+    BG.Size = UDim2.new(0, 300, 0, 100)
 
-function Silicon:Disable()
-	disabled = true
-end
+    local ImageLabel = Instance.new("ImageLabel")
+    ImageLabel.Parent = BG
+    ImageLabel.BackgroundTransparency = 1
+    ImageLabel.Size = UDim2.new(0, 100, 0, 100)
+    ImageLabel.Image = "rbxassetid://124780615486303"
 
-function Silicon:Enable()
-	disabled = false
-end
+    local Title = Instance.new("TextLabel")
+    Title.Parent = BG
+    Title.BackgroundTransparency = 1
+    Title.Position = UDim2.new(0.33, 0, 0.1, 0)
+    Title.Size = UDim2.new(0, 180, 0, 40)
+    Title.Font = Enum.Font.GothamBold
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextSize = 20
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+    Title.Text = TitleText
 
-function Silicon:IsDisabled()
-	return disabled
-end
+    local Description = Instance.new("TextLabel")
+    Description.Parent = BG
+    Description.BackgroundTransparency = 1
+    Description.Position = UDim2.new(0.33, 0, 0.5, 0)
+    Description.Size = UDim2.new(0, 180, 0, 40)
+    Description.Font = Enum.Font.Gotham
+    Description.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Description.TextSize = 18
+    Description.TextXAlignment = Enum.TextXAlignment.Left
+    Description.Text = ContentText
 
-function Silicon:SetFilter(fn)
-	-- fn receives (info) and should return true to BLOCK the notification, false to allow it
-	filterFn = fn
-end
+    local Bar = Instance.new("Frame")
+    Bar.Parent = BG
+    Bar.BackgroundColor3 = Color3.fromRGB(0, 150, 215)
+    Bar.BorderSizePixel = 0
+    Bar.Position = UDim2.new(0, 0, 1, -2)
+    Bar.Size = UDim2.new(0, 0, 0, 2)
 
-function Silicon:ClearFilter()
-	filterFn = nil
-end
+    local TweenService = game:GetService("TweenService")
 
-function Silicon:_spawnGui(info)
-	if disabled then return end
-	if filterFn and filterFn(info) then return end
+    local slideIn = TweenService:Create(
+        BG,
+        TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {Position = UDim2.new(1, -20, 1, -20)}
+    )
+    slideIn:Play()
 
-	local player = Players.LocalPlayer
-	if not player then return end
+    local barTween = TweenService:Create(
+        Bar,
+        TweenInfo.new(3, Enum.EasingStyle.Linear),
+        {Size = UDim2.new(1, 0, 0, 2)}
+    )
+    barTween:Play()
 
-	local template = getTemplate()
-	if not template then
-		warn("SiliconNotifications: SiliconTemplate not found in ReplicatedStorage")
-		return
-	end
+    task.wait(3.8)
 
-	local gui = template:Clone()
-	gui.Name = "SiliconNotificationInstance"
-	gui.Parent = player:WaitForChild("PlayerGui")
+    local slideOut = TweenService:Create(
+        BG,
+        TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+        {Position = UDim2.new(1, 320, 1, -20)}
+    )
+    slideOut:Play()
 
-	local frame = gui:WaitForChild("BG")
-	local titleLabel = frame:WaitForChild("Title")
-	local contentLabel = frame:WaitForChild("Description")
-	local bar = frame:WaitForChild("Bar")
-
-	titleLabel.Text = info.Title or ""
-	contentLabel.Text = info.Content or ""
-
-	frame.AnchorPoint = Vector2.new(1, 1)
-	frame.Position = UDim2.new(1, frame.Size.X.Offset + 20, 1, -20)
-
-	-- configure bar to grow left -> right, 2px tall
-	bar.AnchorPoint = Vector2.new(0, 1)
-	bar.Position = UDim2.new(0, 0, 1, 0)
-	bar.Size = UDim2.new(0, 0, 0, 2)
-	bar.BackgroundColor3 = barColorStart
-
-	-- slide in
-	local slideIn = TweenService:Create(
-		frame,
-		TweenInfo.new(slideDuration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-		{ Position = UDim2.new(1, -20, 1, -20) }
-	)
-	slideIn:Play()
-
-	-- bar tween (size + color)
-	local barTween = TweenService:Create(
-		bar,
-		TweenInfo.new(barDuration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
-		{ Size = UDim2.new(1, 0, 0, 2), BackgroundColor3 = barColorEnd }
-	)
-	barTween:Play()
-
-	-- wait for visible time (slide in time + holdDuration)
-	task.spawn(function()
-		task.wait(slideDuration + holdDuration)
-		local slideOut = TweenService:Create(
-			frame,
-			TweenInfo.new(slideDuration, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
-			{ Position = UDim2.new(1, frame.Size.X.Offset + 20, 1, -20) }
-		)
-		slideOut:Play()
-		slideOut.Completed:Wait()
-		gui:Destroy()
-	end)
-end
-
-function Silicon:Notify(info)
-	-- info = { Title = string, Content = string, Duration = optional number (overrides holdDuration) }
-	if disabled then return end
-	if filterFn and filterFn(info) then return end
-
-	-- if a custom Duration is provided, temporarily use it
-	local oldHold = holdDuration
-	if info.Duration and type(info.Duration) == "number" then
-		holdDuration = info.Duration
-	end
-
-	-- spawn gui (non-blocking)
-	task.spawn(function()
-		self:_spawnGui(info)
-	end)
-
-	-- restore holdDuration (if it was overridden)
-	holdDuration = oldHold
+    slideOut.Completed:Connect(function()
+        gui:Destroy()
+    end)
 end
 
 return Silicon
