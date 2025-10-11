@@ -66,7 +66,7 @@ function Silicon:Notify(tbl)
 
         local Bar = Instance.new("Frame")
         Bar.Parent = BG
-        Bar.BackgroundColor3 = Color3.fromRGB(0, 255, 128)
+        Bar.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
         Bar.BorderSizePixel = 0
         Bar.Position = UDim2.new(0, 0, 1, -2)
         Bar.Size = UDim2.new(0, 0, 0, 2)
