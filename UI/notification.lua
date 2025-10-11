@@ -1,16 +1,20 @@
 local Silicon = {}
 local ActiveNotification = nil
+local Busy = false
 local TweenService = game:GetService("TweenService")
 
 function Silicon:Notify(tbl)
     task.spawn(function()
+        while Busy do task.wait() end
+        Busy = true
+
         local TitleText = tbl.Title or "Notification"
         local ContentText = tbl.Content or "No message"
 
         if ActiveNotification then
             local old = ActiveNotification
             ActiveNotification = nil
-            local slideOutOld = TweenService:Create(old.BG, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Position = UDim2.new(1, 320, 1, -20)})
+            local slideOutOld = TweenService:Create(old.BG, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Position = UDim2.new(1, 320, 1, -20)})
             slideOutOld:Play()
             slideOutOld.Completed:Wait()
             if old.Gui then old.Gui:Destroy() end
@@ -102,7 +106,6 @@ function Silicon:Notify(tbl)
             local neededHeight = math.max(100, Title.TextBounds.Y + Description.TextBounds.Y + 40)
             BG.Size = UDim2.new(0, 300, 0, neededHeight)
         end
-
         Title:GetPropertyChangedSignal("TextBounds"):Connect(adjustSize)
         Description:GetPropertyChangedSignal("TextBounds"):Connect(adjustSize)
         adjustSize()
@@ -115,7 +118,7 @@ function Silicon:Notify(tbl)
         local barTween = TweenService:Create(Bar, TweenInfo.new(3, Enum.EasingStyle.Linear), {Size = UDim2.new(1, 0, 0, 2)})
         barTween:Play()
 
-        task.wait(3.5)
+        task.wait(3.3)
 
         local slideOut = TweenService:Create(BG, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Position = UDim2.new(1, 320, 1, -20)})
         slideOut:Play()
@@ -125,6 +128,8 @@ function Silicon:Notify(tbl)
         if ActiveNotification and ActiveNotification.Gui == gui then
             ActiveNotification = nil
         end
+
+        Busy = false
     end)
 end
 
