@@ -143,11 +143,11 @@ function Silicon:Notify(tbl)
 		CloseHit.ZIndex = 7
 
 		local s = Instance.new("Sound")
-		s.SoundId = "rbxassetid://1316045217"
+		s.SoundId = "rbxassetid://1788243907"
 		s.Volume = 1
+		s.PlayOnRemove = true
 		s.Parent = SoundService
-		s:Play()
-		game.Debris:AddItem(s, 3)
+		s:Destroy()
 
 		table.insert(Notifications, 1, { Gui = gui, BG = BG })
 
