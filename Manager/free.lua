@@ -9,6 +9,9 @@ loadstring(game:HttpGet("https://bit.ly/4ok7xJ9"))()
 
 elseif game.PlaceId == (18722757961) then -- Ragblood
 loadstring(game:HttpGet("https://bit.ly/3JxcNKb"))()
+
+elseif
+  print("Wrong Game Mush. -5xy")
 end
 
 -- What the 5xy
