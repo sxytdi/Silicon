@@ -1,6 +1,6 @@
 local player = game.Players.LocalPlayer
 print("[AutoLoader] Starting...")
-task.wait(5)
+task.wait(0.1)
 print("[AutoLoader] Waiting for ReplicatedStorage.Remote...")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Remote
