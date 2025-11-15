@@ -25,19 +25,19 @@ end
 local success, err = pcall(function()
     if Remote:FindFirstChild("BanMe") then
         Remote.BanMe.Parent = disabledFolder
-        print("[DEBUG] BanMe moved to DisabledRemotes")
+        print("[DEBUG] BanMe Disabled")
     end
     task.wait(2.1)
     if Remote:FindFirstChild("Bunny") then
         Remote.Bunny.Parent = disabledFolder
-        print("[DEBUG] Bunny moved to DisabledRemotes")
+        print("[DEBUG] Bunny Disabled")
     end
 end)
 if not success then
     print("[AutoLoader] Error moving remotes: " .. tostring(err))
 end
-print("[AutoLoader] ACB done, waiting 5s to load script...")
-task.wait(5)
+print("[AutoLoader] ACB done, waiting to load script...")
+task.wait(0.1)
 print("[AutoLoader] Loading script...")
 local loadSuccess, loadErr = pcall(function()
     loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/1e6ddc1413e293f1c1e9702a913ee2cb.lua"))()
