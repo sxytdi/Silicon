@@ -1,162 +1,246 @@
--- Nigga Lib v1 (simple, clean, draggable, with close button)
+-- SiliconLib v1.1 - Clean, Blue UI with improved tabs
 
-local NiggaLib = {}
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "NiggaLib"
-screenGui.ResetOnSpawn = false
-screenGui.Parent = game:GetService("CoreGui")
+local SiliconLib = {}
 
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 500, 0, 400)
-mainFrame.Position = UDim2.new(0.5, -250, 0.5, -200)
-mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-mainFrame.BorderSizePixel = 0
-mainFrame.Active = true
-mainFrame.Draggable = true
-mainFrame.Parent = screenGui
+local BLUE = Color3.fromRGB(0, 151, 215)
+local DARK_BG = Color3.fromRGB(22, 22, 26)
+local TAB_BG = Color3.fromRGB(35, 35, 40)
+local TAB_HOVER = Color3.fromRGB(45, 45, 50)
+local BTN_BG = Color3.fromRGB(40, 40, 48)
 
-Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 8)
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "SiliconLib"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = game:GetService("CoreGui")
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 520, 0, 420)
+MainFrame.Position = UDim2.new(0.5, -260, 0.5, -210)
+MainFrame.BackgroundColor3 = DARK_BG
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Parent = ScreenGui
+
+local Corner = Instance.new("UICorner", MainFrame)
+Corner.CornerRadius = UDim.new(0, 10)
+
+-- Drop shadow
+local Shadow = Instance.new("ImageLabel")
+Shadow.Name = "Shadow"
+Shadow.Parent = MainFrame
+Shadow.AnchorPoint = Vector2.new(0.5, 0.5)
+Shadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+Shadow.Size = MainFrame.Size + UDim2.new(0, 40, 0, 40)
+Shadow.BackgroundTransparency = 1
+Shadow.Image = "rbxassetid://1316045217"
+Shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+Shadow.ImageTransparency = 0.6
 
 -- Title bar
-local titleBar = Instance.new("Frame")
-titleBar.Size = UDim2.new(1, 0, 0, 40)
-titleBar.BackgroundColor3 = Color3.fromRGB(255, 0, 255)
-titleBar.BorderSizePixel = 0
-titleBar.Parent = mainFrame
+local TitleBar = Instance.new("Frame")
+TitleBar.Size = UDim2.new(1, 0, 0, 45)
+TitleBar.BackgroundColor3 = BLUE
+TitleBar.BorderSizePixel = 0
+TitleBar.Parent = MainFrame
 
-local titleText = Instance.new("TextLabel")
-titleText.Size = UDim2.new(1, -60, 1, 0)
-titleText.Position = UDim2.new(0, 10, 0, 0)
-titleText.BackgroundTransparency = 1
-titleText.Text = "nigga lib"
-titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleText.TextXAlignment = Enum.TextXAlignment.Left
-titleText.Font = Enum.Font.GothamBold
-titleText.TextSize = 18
-titleText.Parent = titleBar
+local TitleCorner = Instance.new("UICorner", TitleBar)
+TitleCorner.CornerRadius = UDim.new(0, 10)
 
--- Close button (X)
-local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0, 40, 0, 40)
-closeButton.Position = UDim2.new(1, -40, 0, 0)
-closeButton.BackgroundTransparency = 1
-closeButton.Text = "X"
-closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeButton.Font = Enum.Font.GothamBold
-closeButton.TextSize = 20
-closeButton.Parent = titleBar
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(1, -60, 1, 0)
+TitleLabel.Position = UDim2.new(0, 15, 0, 0)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Text = "SiliconLib"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.TextSize = 20
+TitleLabel.Parent = TitleBar
 
-closeButton.MouseButton1Click:Connect(function()
-	screenGui:Destroy()
+-- Close button
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0, 45, 0, 45)
+CloseButton.Position = UDim2.new(1, -45, 0, 0)
+CloseButton.BackgroundTransparency = 1
+CloseButton.Text = "×"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.TextSize = 26
+CloseButton.Parent = TitleBar
+
+CloseButton.MouseEnter:Connect(function()
+	CloseButton.BackgroundTransparency = 0
+	CloseButton.BackgroundColor3 = Color3.fromRGB(220, 50, 50)
 end)
 
-closeButton.MouseEnter:Connect(function()
-	closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	closeButton.BackgroundTransparency = 0.8
+CloseButton.MouseLeave:Connect(function()
+	CloseButton.BackgroundTransparency = 1
 end)
 
-closeButton.MouseLeave:Connect(function()
-	closeButton.BackgroundTransparency = 1
+CloseButton.MouseButton1Click:Connect(function()
+	ScreenGui:Destroy()
 end)
 
--- Content area (you put your tabs/buttons here)
-local content = Instance.new("Frame")
-content.Size = UDim2.new(1, -20, 1, -50)
-content.Position = UDim2.new(0, 10, 0, 50)
-content.BackgroundTransparency = 1
-content.Parent = mainFrame
+-- Content container
+local Content = Instance.new("Frame")
+Content.Size = UDim2.new(1, -20, 1, -60)
+Content.Position = UDim2.new(0, 10, 0, 55)
+Content.BackgroundTransparency = 1
+Content.Parent = MainFrame
 
--- Example tab system
-local TabHandler = {}
-local tabButtons = Instance.new("Frame")
-tabButtons.Size = UDim2.new(1, 0, 0, 35)
-tabButtons.BackgroundTransparency = 1
-tabButtons.Parent = content
+-- Tabs
+local TabButtons = Instance.new("Frame")
+TabButtons.Size = UDim2.new(1, 0, 0, 40)
+TabButtons.BackgroundTransparency = 1
+TabButtons.Parent = Content
 
-local tabContent = Instance.new("Frame")
-tabContent.Size = UDim2.new(1, 0, 1, -40)
-tabContent.Position = UDim2.new(0, 0, 0, 40)
-tabContent.BackgroundTransparency = 1
-tabContent.Parent = content
+local TabLayout = Instance.new("UIListLayout", TabButtons)
+TabLayout.FillDirection = Enum.FillDirection.Horizontal
+TabLayout.Padding = UDim.new(0, 8)
 
-function NiggaLib:CreateTab(name)
-	local tabBtn = Instance.new("TextButton")
-	tabBtn.Size = UDim2.new(0, 100, 1, 0)
-	tabBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	tabBtn.Text = name
-	tabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-	tabBtn.Font = Enum.Font.Gotham
-	tabBtn.Parent = tabButtons
-	tabBtn.AutoButtonColor = false
+local TabContent = Instance.new("Frame")
+TabContent.Size = UDim2.new(1, 0, 1, -45)
+TabContent.Position = UDim2.new(0, 0, 0, 45)
+TabContent.BackgroundTransparency = 1
+TabContent.Parent = Content
 
-	local tabFrame = Instance.new("Frame")
-	tabFrame.Size = UDim2.new(1, 0, 1, 0)
-	tabFrame.BackgroundTransparency = 1
-	tabFrame.Visible = false
-	tabFrame.Parent = tabContent
+local CurrentTab = nil
 
-	local layout = Instance.new("UIListLayout")
-	layout.Padding = UDim.new(0, 8)
-	layout.FillDirection = Enum.FillDirection.Vertical
-	layout.SortOrder = Enum.SortOrder.LayoutOrder
-	layout.Parent = tabFrame
+function SiliconLib:CreateTab(name)
+	local TabButton = Instance.new("TextButton")
+	TabButton.Size = UDim2.new(0, 130, 1, 0)
+	TabButton.BackgroundColor3 = TAB_BG
+	TabButton.Text = name
+	TabButton.TextColor3 = Color3.fromRGB(220, 220, 220)
+	TabButton.Font = Enum.Font.GothamBold
+	TabButton.TextSize = 15
+	TabButton.AutoButtonColor = false
+	TabButton.Parent = TabButtons
 
-	tabBtn.MouseButton1Click:Connect(function()
-		for _, v in ipairs(tabContent:GetChildren()) do
-			if v:IsA("Frame") then v.Visible = false end
+	local TabCorner = Instance.new("UICorner", TabButton)
+	TabCorner.CornerRadius = UDim.new(0, 8)
+
+	-- Hover effect
+	TabButton.MouseEnter:Connect(function()
+		if CurrentTab ~= TabButton.AssignedTab then
+			TabButton.BackgroundColor3 = TAB_HOVER
 		end
-		tabFrame.Visible = true
 	end)
 
-	if #tabButtons:GetChildren() == 1 then
-		tabFrame.Visible = true
+	TabButton.MouseLeave:Connect(function()
+		if CurrentTab ~= TabButton.AssignedTab then
+			TabButton.BackgroundColor3 = TAB_BG
+		end
+	end)
+
+	local TabFrame = Instance.new("ScrollingFrame")
+	TabFrame.Size = UDim2.new(1, 0, 1, 0)
+	TabFrame.BackgroundTransparency = 1
+	TabFrame.ScrollBarThickness = 4
+	TabFrame.Visible = false
+	TabFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	TabFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+	TabFrame.Parent = TabContent
+
+	local Layout = Instance.new("UIListLayout", TabFrame)
+	Layout.Padding = UDim.new(0, 8)
+	Layout.SortOrder = Enum.SortOrder.LayoutOrder
+
+	TabButton.AssignedTab = TabFrame
+
+	TabButton.MouseButton1Click:Connect(function()
+		if CurrentTab then
+			CurrentTab.Visible = false
+		end
+
+		TabFrame.Visible = true
+		CurrentTab = TabFrame
+
+		-- Reset all tabs
+		for _, btn in ipairs(TabButtons:GetChildren()) do
+			if btn:IsA("TextButton") then
+				btn.BackgroundColor3 = TAB_BG
+				btn.TextColor3 = Color3.fromRGB(220, 220, 220)
+			end
+		end
+
+		-- Selected tab
+		TabButton.BackgroundColor3 = BLUE
+		TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	end)
+
+	-- Auto-select first tab
+	if not CurrentTab then
+		TabButton.BackgroundColor3 = BLUE
+		TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+		TabFrame.Visible = true
+		CurrentTab = TabFrame
 	end
 
-	return setmetatable({
-		AddButton = function(self, text, callback)
-			local btn = Instance.new("TextButton")
-			btn.Size = UDim2.new(1, 0, 0, 35)
-			btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-			btn.Text = text
-			btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-			btn.Font = Enum.Font.Gotham
-			btn.Parent = tabFrame
+	return {
+		AddButton = function(_, text, callback)
+			local Button = Instance.new("TextButton")
+			Button.Size = UDim2.new(1, 0, 0, 42)
+			Button.BackgroundColor3 = BTN_BG
+			Button.Text = text
+			Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Button.Font = Enum.Font.Gotham
+			Button.TextSize = 16
+			Button.Parent = TabFrame
 
-			btn.MouseButton1Click:Connect(callback or function() end)
+			local BtnCorner = Instance.new("UICorner", Button)
+			BtnCorner.CornerRadius = UDim.new(0, 8)
+
+			Button.MouseEnter:Connect(function()
+				Button.BackgroundColor3 = Color3.fromRGB(55, 55, 65)
+			end)
+			Button.MouseLeave:Connect(function()
+				Button.BackgroundColor3 = BTN_BG
+			end)
+
+			Button.MouseButton1Click:Connect(callback or function() end)
 		end,
-		AddToggle = function(self, text, callback)
-			local toggleFrame = Instance.new("Frame")
-			toggleFrame.Size = UDim2.new(1, 0, 0, 35)
-			toggleFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-			toggleFrame.Parent = tabFrame
 
-			local label = Instance.new("TextLabel")
-			label.Size = UDim2.new(1, -60, 1, 0)
-			label.BackgroundTransparency = 1
-			label.Text = text
-			label.TextColor3 = Color3.fromRGB(255, 255, 255)
-			label.TextXAlignment = Enum.TextXAlignment.Left
-			label.Font = Enum.Font.Gotham
-			label.Parent = toggleFrame
+		AddToggle = function(_, text, default, callback)
+			local ToggleFrame = Instance.new("Frame")
+			ToggleFrame.Size = UDim2.new(1, 0, 0, 42)
+			ToggleFrame.BackgroundColor3 = BTN_BG
+			ToggleFrame.Parent = TabFrame
 
-			local toggle = Instance.new("TextButton")
-			toggle.Size = UDim2.new(0, 40, 0, 20)
-			toggle.Position = UDim2.new(1, -50, 0.5, -10)
-			toggle.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-			toggle.Text = ""
-			toggle.Parent = toggleFrame
+			local ToggleCorner = Instance.new("UICorner", ToggleFrame)
+			ToggleCorner.CornerRadius = UDim.new(0, 8)
 
-			local corner = Instance.new("UICorner", toggle)
-			corner.CornerRadius = UDim.new(0, 10)
+			local Label = Instance.new("TextLabel")
+			Label.Size = UDim2.new(1, -70, 1, 0)
+			Label.BackgroundTransparency = 1
+			Label.Text = text
+			Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Label.TextXAlignment = Enum.TextXAlignment.Left
+			Label.Font = Enum.Font.Gotham
+			Label.TextSize = 16
+			Label.Position = UDim2.new(0, 12, 0, 0)
+			Label.Parent = ToggleFrame
 
-			local state = false
-			toggle.MouseButton1Click:Connect(function()
+			local Toggle = Instance.new("TextButton")
+			Toggle.Size = UDim2.new(0, 50, 0, 25)
+			Toggle.Position = UDim2.new(1, -62, 0.5, -12.5)
+			Toggle.BackgroundColor3 = default and BLUE or Color3.fromRGB(70, 70, 80)
+			Toggle.Text = ""
+			Toggle.Parent = ToggleFrame
+
+			local ToggleCorner2 = Instance.new("UICorner", Toggle)
+			ToggleCorner2.CornerRadius = UDim.new(0, 12)
+
+			local state = default or false
+
+			Toggle.MouseButton1Click:Connect(function()
 				state = not state
-				toggle.BackgroundColor3 = state and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+				Toggle.BackgroundColor3 = state and BLUE or Color3.fromRGB(70, 70, 80)
 				if callback then callback(state) end
 			end)
 		end
-	}, {__index = TabHandler})
+	}
 end
 
-return NiggaLib
+return SiliconLib
