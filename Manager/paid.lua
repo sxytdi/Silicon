@@ -10,4 +10,6 @@
         loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/b3547311a217f31a70bd9276c76ff85a.lua"))()
     elseif game.PlaceId == 286090429 then -- arsenal
         loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/40f9d8677bb2889680de95005200c13e.lua"))()
+    elseif game.PlaceId == 1 then -- placeholder
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/40f9d8677bb2889680de95005200c13e.lua"))()
     end
