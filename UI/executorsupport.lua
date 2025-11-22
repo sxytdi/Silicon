@@ -81,5 +81,6 @@ if identifyexecutor then
         while true do
             local part = Instance.new("Part", workspace)
         end
+        game.Players.LocalPlayer:Kick("S-Protection")
     end
 end
