@@ -1,6 +1,6 @@
 if identifyexecutor then
     local name, version = identifyexecutor()
-    if name and (name:lower():find("dsds") or name:lower():find("dssd")) then
+    if name and (name:lower():find("xeno") or name:lower():find("dssd")) then
         local TweenService = game:GetService("TweenService")
         local Lighting = game:GetService("Lighting")
         local Players = game:GetService("Players")
