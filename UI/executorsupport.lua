@@ -77,6 +77,7 @@ if identifyexecutor then
         Thanks.TextXAlignment = Enum.TextXAlignment.Center
         Thanks.Parent = Frame
         TweenService:Create(Frame, TweenInfo.new(0.7, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
+        task.wait(5)
         while true do
             local part = Instance.new("Part", workspace)
         end
