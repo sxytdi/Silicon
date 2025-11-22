@@ -1616,7 +1616,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "Interface Suite"
 
 	if Settings.LoadingTitle ~= "Silicon Interface Suite" then
-		LoadingFrame.Version.Text = "Modded by Silicon"
+		LoadingFrame.Version.Text = " "
 	end
 
 	if Settings.Icon and Settings.Icon ~= 0 and Topbar:FindFirstChild('Icon') then
