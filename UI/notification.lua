@@ -1,295 +1,188 @@
---// Silicon Notifications – Refactored Professional Module
---// Clean, modern, configurable, optimized
-
 local Silicon = {}
-
 local TweenService = game:GetService("TweenService")
 local SoundService = game:GetService("SoundService")
-local Players = game:GetService("Players")
-
---====================================================
--- CONFIG
---====================================================
-
-Silicon.MaxVisible    = 5
-Silicon.Spacing       = 10
-Silicon.BaseOffsetY   = -24
-Silicon.AnimationTime = 0.32
-
-Silicon.NotificationSoundEnabled = true
-
--- Theme Colors
-Silicon.Theme = {
-	Background = Color3.fromRGB(20,20,24),
-	Accent     = Color3.fromRGB(120,120,255),
-	Text       = Color3.fromRGB(240,240,240),
-	Secondary  = Color3.fromRGB(190,190,190),
-	BarBG      = Color3.fromRGB(35,35,40)
-}
-
--- Optional icon presets
-Silicon.TypePresets = {
-	Success = {
-		Color = Color3.fromRGB(90,255,140),
-		Icon  = "rbxassetid://7734050064",
-	},
-
-	Error = {
-		Color = Color3.fromRGB(255,90,90),
-		Icon  = "rbxassetid://7733791703",
-	},
-
-	Warning = {
-		Color = Color3.fromRGB(255,200,90),
-		Icon  = "rbxassetid://7733658504",
-	},
-
-	Info = {
-		Color = Color3.fromRGB(120,140,255),
-		Icon  = "rbxassetid://7733656025",
-	}
-}
+local PlayerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 local Notifications = {}
+local MaxVisible = 4
+local Spacing = 10
+local BaseY = -20
 
---====================================================
--- HELPERS
---====================================================
+Silicon.NotificationSoundEnabled = true
+Silicon.NotificationDuration = 4
 
-local function Tween(obj, info, props)
-	return TweenService:Create(obj, TweenInfo.new(info.Time or info, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), props)
+local function createTween(o, t, d)
+    TweenService:Create(o, TweenInfo.new(t, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), d):Play()
 end
-
-local function Create(class, props)
-	local inst = Instance.new(class)
-	for k, v in next, props do inst[k] = v end
-	return inst
-end
-
---====================================================
--- CORE NOTIFICATION CREATION
---====================================================
 
 function Silicon:Notify(data)
-	task.spawn(function()
+    task.spawn(function()
+        local TitleText = data.Title or "Notification"
+        local ContentText = data.Content or ""
+        local Muted = data.Mute == true
 
-		-- Extract Data
-		local title     = data.Title or "Notification"
-		local content   = data.Content or "Message"
-		local duration  = data.Duration or 3.5
-		local mute      = data.Mute == true
-		local onClick   = data.Callback
-		local nType     = data.Type -- Success / Error / Warning / Info
-		local customMax = data.Max or Silicon.MaxVisible
+        local gui = Instance.new("ScreenGui")
+        gui.Name = "SiliconNotification"
+        gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+        gui.Parent = PlayerGui
 
-		local preset = Silicon.TypePresets[nType]
-		local accentColor = preset and preset.Color or Silicon.Theme.Accent
-		local iconID      = preset and preset.Icon  or data.Icon or "rbxassetid://124780615486303"
+        local BG = Instance.new("Frame")
+        BG.Parent = gui
+        BG.Size = UDim2.new(0, 330, 0, 94)
+        BG.Position = UDim2.new(1, 350, 1, BaseY)
+        BG.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+        BG.BorderSizePixel = 0
+        BG.ClipsDescendants = true
 
-		local playerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
+        local c = Instance.new("UICorner")
+        c.CornerRadius = UDim.new(0, 12)
+        c.Parent = BG
 
-		--=============================================
-		-- GUI ROOT
-		--=============================================
+        local Shadow = Instance.new("ImageLabel")
+        Shadow.Parent = BG
+        Shadow.BackgroundTransparency = 1
+        Shadow.Position = UDim2.new(0, -12, 0, -12)
+        Shadow.Size = UDim2.new(1, 24, 1, 24)
+        Shadow.Image = "rbxassetid://1316045217"
+        Shadow.ImageColor3 = Color3.fromRGB(0,0,0)
+        Shadow.ImageTransparency = 0.82
+        Shadow.ScaleType = Enum.ScaleType.Slice
+        Shadow.SliceCenter = Rect.new(10,10,118,118)
+        Shadow.ZIndex = 0
 
-		local gui = Create("ScreenGui", {
-			Name = "SiliconNotification",
-			Parent = playerGui,
-			ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-		})
+        local IconWrap = Instance.new("Frame")
+        IconWrap.Parent = BG
+        IconWrap.Position = UDim2.new(0, 18, 0, 21)
+        IconWrap.Size = UDim2.new(0, 44, 0, 44)
+        IconWrap.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
 
-		local bg = Create("Frame", {
-			Parent = gui,
-			BackgroundColor3 = Silicon.Theme.Background,
-			BorderSizePixel = 0,
-			AnchorPoint = Vector2.new(1,1),
-			Size = UDim2.new(0, 300, 0, 80),
-			Position = UDim2.new(1, 320, 1, Silicon.BaseOffsetY),
-			ClipsDescendants = true
-		})
+        local ic = Instance.new("UICorner")
+        ic.CornerRadius = UDim.new(1, 0)
+        ic.Parent = IconWrap
 
-		Create("UICorner", {Parent = bg, CornerRadius = UDim.new(0, 10)})
+        local is = Instance.new("UIStroke")
+        is.Color = Color3.fromRGB(0, 170, 255)
+        is.Thickness = 1.4
+        is.Parent = IconWrap
 
-		-- Shadow
-		Create("ImageLabel", {
-			Parent = bg,
-			BackgroundTransparency = 1,
-			Position = UDim2.new(0, -16, 0, -16),
-			Size = UDim2.new(1, 32, 1, 32),
-			Image = "rbxassetid://1316045217",
-			ImageTransparency = 0.86,
-			ZIndex = 0
-		})
+        local Icon = Instance.new("ImageLabel")
+        Icon.Parent = IconWrap
+        Icon.BackgroundTransparency = 1
+        Icon.Size = UDim2.new(0, 26, 0, 26)
+        Icon.Position = UDim2.new(0.5, -13, 0.5, -13)
+        Icon.Image = "rbxassetid://124780615486303"
 
-		--=============================================
-		-- ICON
-		--=============================================
+        local Title = Instance.new("TextLabel")
+        Title.Parent = BG
+        Title.BackgroundTransparency = 1
+        Title.Position = UDim2.new(0, 78, 0, 20)
+        Title.Size = UDim2.new(1, -120, 0, 26)
+        Title.Font = Enum.Font.GothamBold
+        Title.TextColor3 = Color3.fromRGB(255,255,255)
+        Title.TextSize = 19
+        Title.TextXAlignment = Enum.TextXAlignment.Left
+        Title.Text = TitleText
 
-		local iconWrap = Create("Frame", {
-			Parent = bg,
-			BackgroundColor3 = Silicon.Theme.BarBG,
-			Size = UDim2.new(0, 38, 0, 38),
-			Position = UDim2.new(0, 14, 0, 18)
-		})
-		Create("UICorner", {Parent = iconWrap, CornerRadius = UDim.new(1, 0)})
+        local Desc = Instance.new("TextLabel")
+        Desc.Parent = BG
+        Desc.BackgroundTransparency = 1
+        Desc.Position = UDim2.new(0, 78, 0, 45)
+        Desc.Size = UDim2.new(1, -120, 0, 36)
+        Desc.Font = Enum.Font.Gotham
+        Desc.TextColor3 = Color3.fromRGB(200,200,200)
+        Desc.TextSize = 13
+        Desc.TextXAlignment = Enum.TextXAlignment.Left
+        Desc.TextWrapped = true
+        Desc.Text = ContentText
 
-		Create("ImageLabel", {
-			Parent = iconWrap,
-			BackgroundTransparency = 1,
-			Image = iconID,
-			ImageColor3 = accentColor,
-			Size = UDim2.new(0, 22, 0, 22),
-			Position = UDim2.new(0.5, -11, 0.5, -11)
-		})
+        local BarBG = Instance.new("Frame")
+        BarBG.Parent = BG
+        BarBG.Position = UDim2.new(0, 14, 1, -8)
+        BarBG.Size = UDim2.new(1, -28, 0, 3)
+        BarBG.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
 
-		--=============================================
-		-- TEXT
-		--=============================================
+        local bc = Instance.new("UICorner")
+        bc.CornerRadius = UDim.new(0, 3)
+        bc.Parent = BarBG
 
-		Create("TextLabel", {
-			Parent = bg,
-			BackgroundTransparency = 1,
-			Position = UDim2.new(0, 64, 0, 14),
-			Size = UDim2.new(1, -80, 0, 24),
-			Font = Enum.Font.GothamSemibold,
-			TextColor3 = Silicon.Theme.Text,
-			TextSize = 18,
-			TextXAlignment = Enum.TextXAlignment.Left,
-			Text = title
-		})
+        local Bar = Instance.new("Frame")
+        Bar.Parent = BarBG
+        Bar.Size = UDim2.new(0, 0, 1, 0)
+        Bar.BackgroundColor3 = Color3.fromRGB(0,170,255)
 
-		Create("TextLabel", {
-			Parent = bg,
-			BackgroundTransparency = 1,
-			Position = UDim2.new(0, 64, 0, 34),
-			Size = UDim2.new(1, -80, 0, 36),
-			Font = Enum.Font.Gotham,
-			TextColor3 = Silicon.Theme.Secondary,
-			TextSize = 14,
-			TextWrapped = true,
-			TextXAlignment = Enum.TextXAlignment.Left,
-			Text = content
-		})
+        local bc2 = Instance.new("UICorner")
+        bc2.CornerRadius = UDim.new(0, 3)
+        bc2.Parent = Bar
 
-		--=============================================
-		-- TIMER BAR
-		--=============================================
+        local CloseBtn = Instance.new("TextButton")
+        CloseBtn.Parent = BG
+        CloseBtn.Position = UDim2.new(1, -28, 0, 12)
+        CloseBtn.Size = UDim2.new(0, 16, 0, 16)
+        CloseBtn.BackgroundTransparency = 1
+        CloseBtn.Text = ""
 
-		local barBG = Create("Frame", {
-			Parent = bg,
-			BackgroundColor3 = Silicon.Theme.BarBG,
-			BorderSizePixel = 0,
-			Position = UDim2.new(0, 10, 1, -8),
-			Size = UDim2.new(1, -20, 0, 3)
-		})
-		Create("UICorner", {Parent = barBG, CornerRadius = UDim.new(0, 3)})
+        local A = Instance.new("Frame")
+        A.Parent = CloseBtn
+        A.AnchorPoint = Vector2.new(0.5,0.5)
+        A.Position = UDim2.new(0.5,0,0.5,0)
+        A.Size = UDim2.new(1,0,0,2)
+        A.BackgroundColor3 = Color3.fromRGB(180,180,185)
+        A.BorderSizePixel = 0
+        A.Rotation = 45
 
-		local bar = Create("Frame", {
-			Parent = barBG,
-			BackgroundColor3 = accentColor,
-			Size = UDim2.new(0, 0, 1, 0)
-		})
-		Create("UICorner", {Parent = bar, CornerRadius = UDim.new(0, 3)})
+        local B = A:Clone()
+        B.Parent = CloseBtn
+        B.Rotation = -45
 
-		--=============================================
-		-- CLOSE BUTTON
-		--=============================================
+        if not Muted and Silicon.NotificationSoundEnabled then
+            local s = Instance.new("Sound")
+            s.SoundId = "rbxassetid://1788243907"
+            s.Volume = 0.9
+            s.PlayOnRemove = true
+            s.Parent = SoundService
+            s:Destroy()
+        end
 
-		local close = Create("TextButton", {
-			Parent = bg,
-			BackgroundTransparency = 1,
-			Text = "×",
-			Font = Enum.Font.GothamBold,
-			TextScaled = true,
-			Size = UDim2.new(0, 16, 0, 16),
-			Position = UDim2.new(1, -26, 0, 10),
-			TextColor3 = Silicon.Theme.Secondary
-		})
+        table.insert(Notifications, 1, {Gui = gui, BG = BG})
 
-		close.MouseEnter:Connect(function()
-			Tween(close, 0.15, {TextColor3 = Color3.fromRGB(255,80,80)}):Play()
-		end)
+        for i, n in ipairs(Notifications) do
+            local y = BaseY - ((i - 1) * (94 + Spacing))
+            createTween(n.BG, 0.3, {Position = UDim2.new(1, -20, 1, y)})
+            if i > MaxVisible then
+                table.remove(Notifications, i)
+                n.Gui:Destroy()
+            end
+        end
 
-		close.MouseLeave:Connect(function()
-			Tween(close, 0.15, {TextColor3 = Silicon.Theme.Secondary}):Play()
-		end)
+        createTween(BG, 0.35, {Position = UDim2.new(1, -20, 1, BaseY)})
+        TweenService:Create(Bar, TweenInfo.new(Silicon.NotificationDuration, Enum.EasingStyle.Linear), {Size = UDim2.new(1,0,1,0)}):Play()
 
-		--=============================================
-		-- SOUND
-		--=============================================
+        local dismissed = false
 
-		if Silicon.NotificationSoundEnabled and not mute then
-			local snd = Create("Sound", {
-				SoundId = data.Sound or "rbxassetid://1788243907",
-				Volume = 1,
-				PlayOnRemove = true,
-				Parent = SoundService
-			})
-			snd:Destroy()
-		end
+        local function dismiss()
+            if dismissed then return end
+            dismissed = true
+            TweenService:Create(BG, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Position = UDim2.new(1, 350, 1, BaseY)}):Play()
+            task.wait(0.3)
 
-		--=============================================
-		-- STACK MANAGEMENT
-		--=============================================
+            for i, n in ipairs(Notifications) do
+                if n.Gui == gui then
+                    table.remove(Notifications, i)
+                    break
+                end
+            end
 
-		table.insert(Notifications, 1, {Gui = gui, BG = bg})
+            gui:Destroy()
 
-		for i, note in ipairs(Notifications) do
-			if i > customMax then
-				table.remove(Notifications, i)
-				note.Gui:Destroy()
-			else
-				local y = Silicon.BaseOffsetY - (i - 1) * (bg.Size.Y.Offset + Silicon.Spacing)
-				Tween(note.BG, Silicon.AnimationTime, {Position = UDim2.new(1, -16, 1, y)}):Play()
-			end
-		end
+            for i, n in ipairs(Notifications) do
+                local y = BaseY - ((i - 1) * (94 + Spacing))
+                createTween(n.BG, 0.25, {Position = UDim2.new(1, -20, 1, y)})
+            end
+        end
 
-		Tween(bg, Silicon.AnimationTime, {Position = UDim2.new(1, -16, 1, Silicon.BaseOffsetY)}):Play()
-		Tween(bar, duration, {Size = UDim2.new(1, 0, 1, 0)}):Play()
-
-		--=============================================
-		-- DISMISS LOGIC
-		--=============================================
-
-		local dismissed = false
-		
-		local function dismiss()
-			if dismissed then return end
-			dismissed = true
-
-			local t = Tween(bg, Silicon.AnimationTime, {
-				Position = UDim2.new(1, 320, 1, Silicon.BaseOffsetY)
-			})
-			t:Play()
-			t.Completed:Wait()
-
-			for i, note in ipairs(Notifications) do
-				if note.Gui == gui then
-					table.remove(Notifications, i)
-					break
-				end
-			end
-
-			gui:Destroy()
-
-			for i, note in ipairs(Notifications) do
-				local y = Silicon.BaseOffsetY - (i - 1) * (note.BG.Size.Y.Offset + Silicon.Spacing)
-				Tween(note.BG, 0.25, {Position = UDim2.new(1, -16, 1, y)}):Play()
-			end
-		end
-
-		-- Click event
-		if onClick then
-			bg.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
-					onClick()
-				end
-			end)
-		end
-
-		close.MouseButton1Click:Connect(dismiss)
-		task.delay(duration + 0.1, dismiss)
-	end)
+        CloseBtn.MouseButton1Click:Connect(dismiss)
+        task.delay(Silicon.NotificationDuration, dismiss)
+    end)
 end
 
 return Silicon
