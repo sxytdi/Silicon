@@ -141,4 +141,56 @@ function Silicon:Create(options)
     return UI
 end
 
+-- Page System
+    function UI:CreatePage(name)
+        local Page = Instance.new("Frame", MainFrame)
+        Page.Size = UDim2.new(1, -20, 1, -110)
+        Page.Position = UDim2.new(0, 10, 0, 110)
+        Page.BackgroundTransparency = 1
+        Page.Visible = false
+
+        local PageList = Instance.new("UIListLayout", Page)
+        PageList.Padding = UDim.new(0, 10)
+        PageList.SortOrder = Enum.SortOrder.LayoutOrder
+
+        return Page
+    end
+
+    -- Tab Switching
+    function UI:BindTab(tab, page)
+        tab.MouseButton1Click:Connect(function()
+            for _, child in ipairs(MainFrame:GetChildren()) do
+                if child:IsA("Frame") and child ~= Page then
+                    child.Visible = false
+                end
+            end
+            page.Visible = true
+        end)
+    end
+
+    -- Elements
+    function UI:CreateButton(page, text, callback)
+        local Btn = Instance.new("TextButton", page)
+        Btn.Size = UDim2.new(1, 0, 0, 40)
+        Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        Btn.Text = text
+        Btn.TextColor3 = Color3.fromRGB(220, 220, 220)
+        Btn.Font = Enum.Font.GothamSemibold
+        Btn.TextSize = 16
+
+        Instance.new("UICorner", Btn).CornerRadius = UDim.new(0, 10)
+
+        Btn.MouseEnter:Connect(function()
+            Btn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+        end)
+        Btn.MouseLeave:Connect(function()
+            Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        end)
+
+        Btn.MouseButton1Click:Connect(callback)
+    end
+
+    return UI
+end
+
 return Silicon
