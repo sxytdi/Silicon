@@ -32,10 +32,6 @@ function SiliconUI:CreateWindow(config)
 	Main.ClipsDescendants = true
 	Main.Parent = ScreenGui
 
-	local MainCorner = Instance.new("UICorner")
-	MainCorner.CornerRadius = UDim.new(0, 16)
-	MainCorner.Parent = Main
-
 	local Shadow = Instance.new("ImageLabel")
 	Shadow.Image = "rbxassetid://6014261993"
 	Shadow.BackgroundTransparency = 1
@@ -50,10 +46,6 @@ function SiliconUI:CreateWindow(config)
 	Topbar.Size = UDim2.new(1, 0, 0, 50)
 	Topbar.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
 	Topbar.Parent = Main
-
-	local TopbarCorner = Instance.new("UICorner")
-	TopbarCorner.CornerRadius = UDim.new(0, 16)
-	TopbarCorner.Parent = Topbar
 
 	local Title = Instance.new("TextLabel")
 	Title.Text = config.Title or "My Script"
@@ -165,10 +157,6 @@ function SiliconUI:AddTab(name)
 	Button.TextXAlignment = Enum.TextXAlignment.Left
 	Button.Parent = self.Sidebar
 
-	local Corner = Instance.new("UICorner")
-	Corner.CornerRadius = UDim.new(0, 10)
-	Corner.Parent = Button
-
 	local Page = Instance.new("Frame")
 	Page.Size = UDim2.new(1, 0, 1, 0)
 	Page.BackgroundTransparency = 1
@@ -221,10 +209,6 @@ function SiliconUI:CreateToggle(text, default, callback)
 	Frame.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
 	Frame.Parent = self.Page
 
-	local Corner = Instance.new("UICorner")
-	Corner.CornerRadius = UDim.new(0, 12)
-	Corner.Parent = Frame
-
 	local Label = Instance.new("TextLabel")
 	Label.Size = UDim2.new(1, -50, 1, 0)
 	Label.Position = UDim2.new(0, 14, 0, 0)
@@ -244,20 +228,12 @@ function SiliconUI:CreateToggle(text, default, callback)
 	Toggle.Text = ""
 	Toggle.Parent = Frame
 
-	local ToggleCorner = Instance.new("UICorner")
-	ToggleCorner.CornerRadius = UDim.new(0, 12)
-	ToggleCorner.Parent = Toggle
-
 	local Indicator = Instance.new("Frame")
 	Indicator.Size = UDim2.new(0, 18, 0, 18)
 	Indicator.Position = UDim2.new(0, 4, 0.5, -9)
 	Indicator.AnchorPoint = Vector2.new(0, 0.5)
 	Indicator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	Indicator.Parent = Toggle
-
-	local IndCorner = Instance.new("UICorner")
-	IndCorner.CornerRadius = UDim.new(1, 0)
-	IndCorner.Parent = Indicator
 
 	local enabled = default or false
 
