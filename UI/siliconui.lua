@@ -232,4 +232,64 @@ function SiliconUI:CreateToggle(text, default, callback)
 	Label.Text = text
 	Label.TextColor3 = Color3.fromRGB(230, 230, 230)
 	Label.Font = Enum.Font.Gotham
-	Label.TextSize =
+	Label.TextSize = 14
+	Label.TextXAlignment = Enum.TextXAlignment.Left
+	Label.Parent = Frame
+
+	local Toggle = Instance.new("TextButton")
+	Toggle.Size = UDim2.new(0, 46, 0, 24)
+	Toggle.Position = UDim2.new(1, -60, 0.5, -12)
+	Toggle.AnchorPoint = Vector2.new(0, 0.5)
+	Toggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	Toggle.Text = ""
+	Toggle.Parent = Frame
+
+	local ToggleCorner = Instance.new("UICorner")
+	ToggleCorner.CornerRadius = UDim.new(0, 12)
+	ToggleCorner.Parent = Toggle
+
+	local Indicator = Instance.new("Frame")
+	Indicator.Size = UDim2.new(0, 18, 0, 18)
+	Indicator.Position = UDim2.new(0, 4, 0.5, -9)
+	Indicator.AnchorPoint = Vector2.new(0, 0.5)
+	Indicator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Indicator.Parent = Toggle
+
+	local IndCorner = Instance.new("UICorner")
+	IndCorner.CornerRadius = UDim.new(1, 0)
+	IndCorner.Parent = Indicator
+
+	local enabled = default or false
+
+	local function update()
+		tween(Toggle, {
+			BackgroundColor3 = enabled and Color3.fromRGB(100, 70, 200) or Color3.fromRGB(50, 50, 50)
+		}, 0.2)
+
+		tween(Indicator, {
+			Position = enabled and UDim2.new(1, -22, 0.5, -9) or UDim2.new(0, 4, 0.5, -9)
+		}, 0.2)
+	end
+
+	update()
+
+	Frame.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			enabled = not enabled
+			update()
+			if callback then
+				callback(enabled)
+			end
+		end
+	end)
+
+	return function(state)
+		if state ~= nil then
+			enabled = state
+			update()
+		end
+		return enabled
+	end
+end
+
+return SiliconUI
