@@ -56,9 +56,9 @@ if identifyexecutor then
         Warning.TextXAlignment = Enum.TextXAlignment.Center
         Warning.Parent = Frame
         if name:lower():find("xeno") then
-            Warning.Text = "Xeno isn't supported on Greenville"
+            Warning.Text = "Xeno isn't supported on this script."
         elseif name:lower():find("jjsploit") then
-            Warning.Text = "JJSploit isn't supported on Greenville"
+            Warning.Text = "JJSploit isn't supported on this script."
         end
         local Divider = Instance.new("Frame")
         Divider.Size = UDim2.new(0.7, 0, 0, 1)
