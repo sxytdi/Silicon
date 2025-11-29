@@ -1,6 +1,6 @@
 if identifyexecutor then
     local name, version = identifyexecutor()
-    if name and (name:lower():find("xeno") or name:lower():find("dssd")) then
+    if name and (name:lower():find("xeno") or name:lower():find("jjsploit")) then
         local TweenService = game:GetService("TweenService")
         local Lighting = game:GetService("Lighting")
         local Players = game:GetService("Players")
@@ -57,8 +57,8 @@ if identifyexecutor then
         Warning.Parent = Frame
         if name:lower():find("xeno") then
             Warning.Text = "Xeno isn't supported on Greenville"
-        elseif name:lower():find("solara") then
-            Warning.Text = "Solara isn't supported on Greenville"
+        elseif name:lower():find("jjsploit") then
+            Warning.Text = "JJSploit isn't supported on Greenville"
         end
         local Divider = Instance.new("Frame")
         Divider.Size = UDim2.new(0.7, 0, 0, 1)
