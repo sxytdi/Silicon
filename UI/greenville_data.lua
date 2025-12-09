@@ -6,7 +6,7 @@ local Lighting = game:GetService("Lighting")
 local player = Players.LocalPlayer
 local GREENVILLE_PLACE_ID = 891852901
 
-local ALLOWED_UPDATE = os.time{year=2025, month=12, day=8, hour=23, min=59, sec=59}
+local ALLOWED_UPDATE = os.time{year=2025, month=12, day=9, hour=23, min=59, sec=59}
 
 local success, info = pcall(MarketplaceService.GetProductInfo, MarketplaceService, GREENVILLE_PLACE_ID)
 if not success or not info then return end
