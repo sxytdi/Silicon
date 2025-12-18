@@ -241,11 +241,6 @@ Button.MouseButton1Click:Connect(function()
         return
     end
 
-    if typeof(script_key) ~= "string" or #script_key ~= 16 or not script_key:match("^[A-Za-z0-9]+$") then
-        player:Kick("Invalid or missing script key.")
-        return
-    end
-
     if game.PlaceId == gameTags.Greenville then
         loadstring(game:HttpGet("https://api.siliconxploits.xyz/greenville-check"))()
         loadstring(game:HttpGet("https://api.siliconxploits.xyz/secure/9027483615902748"))()
