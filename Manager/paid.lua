@@ -241,7 +241,7 @@ Button.MouseButton1Click:Connect(function()
         return
     end
 
-    if typeof(script_key) ~= "string" or #script_key ~= 32 or not script_key:match("^[A-Za-z0-9]+$") then
+    if typeof(script_key) ~= "string" or #script_key ~= 16 or not script_key:match("^[A-Za-z0-9]+$") then
         player:Kick("Invalid or missing script key.")
         return
     end
