@@ -1,5 +1,3 @@
 Greenville=true
-RensselaerCounty=true
-Flick=true
-SouthwestFlorida=true
 CentralKansas=true
+FixItUp=true
