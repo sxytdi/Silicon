@@ -1,3 +1,6 @@
 game.StarterGui:SetCore("SendNotification", {Title = "5xys Secret Message", Text = "W nexus skid LOL", Duration = 5})
 game.StarterGui:SetCore("SendNotification", {Title = "5xys Secret Message", Text = "discord.gg/siliconxploit", Duration = 5})
+task.wait(1)
 game.ReplicatedStorage.Remote.BanMe:Destroy()
+task.wait(1)
+game.Players.LocalPlayer:Kick("5xy's Secret Message\nNexus tried to exploit us but failed,\nbetter luck next time. LOL\n\ndiscord.gg/siliconxploit")
