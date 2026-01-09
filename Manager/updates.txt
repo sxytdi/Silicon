@@ -1,8 +1,3 @@
-Mojave Valley
-V0.0.2
-
-- Made DTE Farm Quicker
-
 Greenville
 V0.1.65
 
