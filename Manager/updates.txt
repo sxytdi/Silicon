@@ -1,7 +1,7 @@
-Polish Car Driving
-V0.0.1
+Blade Ball
+V0.0.2
 
-- Released
+- Fixed Auto Parry
 
 Mojave Valley
 V0.0.2
