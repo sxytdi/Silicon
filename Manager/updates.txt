@@ -1,6 +1,7 @@
 Blade Ball
 V0.0.2
 
+- Added Spinbot
 - Fixed Auto Parry
 
 Mojave Valley
