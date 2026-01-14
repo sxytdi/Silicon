@@ -1,4 +1,10 @@
 Blade Ball
+V0.0.3
+
+- Buffed AutoParry
+- Added Visualiser Toggle
+
+Blade Ball
 V0.0.2
 
 - Added Spinbot
