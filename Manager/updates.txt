@@ -1,7 +1,6 @@
-Rivals
-V0.0.1
+Free Loader
 
-- Released
+- Added 2 Games
 
 Arsenal
 V0.0.1
