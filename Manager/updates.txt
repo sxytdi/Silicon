@@ -18,14 +18,6 @@ V0.0.3
 
 - Improved Coin Autofarm
 
-Free Loader
-
-- Fixed Blade Ball
-
-Free Loader
-
-- Added 2 Games
-
 Arsenal
 V0.0.1
 
@@ -57,11 +49,6 @@ Greenville
 V0.1.65
 
 - Made Sahara Quicker
-
-Executor
-V0.1.1
-
-- Updated to latest Roblox version
 
 Greenville
 V0.1.6
