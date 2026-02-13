@@ -5,32 +5,26 @@
     ╚════██║██║██║     ██║██║     ██║   ██║██║╚██╗██║
     ███████║██║███████╗██║╚██████╗╚██████╔╝██║ ╚████║
     ╚══════╝╚═╝╚══════╝╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝
-    SiliconUI  •  v1.0.0
+    SiliconUI  •  v0.0.1
     Modern dark UI library for Roblox
 ─────────────────────────────────────────────]]
 
 local SiliconUI  = { Flags = {} }
 
-----------------------------------------------------------------
--- SERVICES
-----------------------------------------------------------------
 local TweenService    = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local Players         = game:GetService("Players")
 local CoreGui         = game:GetService("CoreGui")
 local LocalPlayer     = Players.LocalPlayer
 
-----------------------------------------------------------------
--- THEME
-----------------------------------------------------------------
 local Theme = {
     Bg              = Color3.fromRGB(14, 14, 20),
     Bg2             = Color3.fromRGB(19, 19, 27),
     Bg3             = Color3.fromRGB(24, 24, 34),
     Element         = Color3.fromRGB(28, 28, 40),
     ElementHover    = Color3.fromRGB(34, 34, 48),
-    Accent          = Color3.fromRGB(108, 92, 231),
-    AccentDark      = Color3.fromRGB(82, 68, 190),
+    Accent          = Color3.fromRGB(0, 151, 215),
+    AccentDark      = Color3.fromRGB(0, 125, 180),
     Text            = Color3.fromRGB(230, 230, 240),
     SubText         = Color3.fromRGB(148, 148, 168),
     DimText         = Color3.fromRGB(90, 90, 108),
@@ -42,9 +36,6 @@ local Theme = {
     Error           = Color3.fromRGB(255, 71, 87),
 }
 
-----------------------------------------------------------------
--- UTILITY HELPERS
-----------------------------------------------------------------
 local function Tween(obj, props, dur, style, dir)
     local t = TweenService:Create(
         obj,
@@ -121,9 +112,6 @@ local function Ripple(btn)
     end)
 end
 
-----------------------------------------------------------------
--- CREATE WINDOW
-----------------------------------------------------------------
 function SiliconUI:CreateWindow(cfg)
     cfg = cfg or {}
     local winName     = cfg.Name            or "SiliconUI"
@@ -145,7 +133,6 @@ function SiliconUI:CreateWindow(cfg)
 
     local Window = { _tabs = {}, _activeTab = nil, _minimized = false }
 
-    -- ScreenGui ------------------------------------------------
     local gui = Make("ScreenGui", {
         Name              = "SiliconUI",
         ZIndexBehavior    = Enum.ZIndexBehavior.Sibling,
@@ -155,7 +142,6 @@ function SiliconUI:CreateWindow(cfg)
     local ok, _ = pcall(function() gui.Parent = CoreGui end)
     if not gui.Parent then gui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
 
-    -- Main frame -----------------------------------------------
     local main = Make("Frame", {
         Name                   = "Main",
         BackgroundColor3       = Theme.Bg,
@@ -168,7 +154,6 @@ function SiliconUI:CreateWindow(cfg)
     Corner(main, 10)
     Stroke(main, Theme.Border, 1, 0.5)
 
-    -- Drop shadow (image) --------------------------------------
     Make("ImageLabel", {
         BackgroundTransparency = 1,
         Position  = UDim2.new(0.5,0,0.5,0),
@@ -183,9 +168,6 @@ function SiliconUI:CreateWindow(cfg)
         Parent = main,
     })
 
-    ------------------------------------------------
-    -- TOP BAR
-    ------------------------------------------------
     local topBar = Make("Frame", {
         Name = "TopBar",
         BackgroundColor3 = Theme.Bg2,
@@ -193,8 +175,9 @@ function SiliconUI:CreateWindow(cfg)
         BorderSizePixel = 0,
         Parent = main,
     })
+
     Corner(topBar, 10)
-    -- fill bottom corners of topbar
+
     Make("Frame", {
         BackgroundColor3 = Theme.Bg2,
         Size = UDim2.new(1,0,0,14),
@@ -202,7 +185,7 @@ function SiliconUI:CreateWindow(cfg)
         BorderSizePixel = 0,
         Parent = topBar,
     })
-    -- divider
+
     Make("Frame", {
         BackgroundColor3 = Theme.Divider,
         Size = UDim2.new(1,0,0,1),
@@ -211,7 +194,6 @@ function SiliconUI:CreateWindow(cfg)
         Parent = main,
     })
 
-    -- accent dot
     Make("Frame", {
         BackgroundColor3 = Theme.Accent,
         Size = UDim2.fromOffset(8,8),
@@ -220,7 +202,6 @@ function SiliconUI:CreateWindow(cfg)
         Parent = topBar,
     }, { Make("UICorner", {CornerRadius = UDim.new(1,0)}) })
 
-    -- title
     Make("TextLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0,28,0,0),
@@ -233,7 +214,6 @@ function SiliconUI:CreateWindow(cfg)
         Parent = topBar,
     })
 
-    -- controls
     local ctrls = Make("Frame", {
         BackgroundTransparency = 1,
         Position = UDim2.new(1,-82,0,0),
@@ -262,7 +242,6 @@ function SiliconUI:CreateWindow(cfg)
     local minBtn   = CtrlBtn("—", 1, Theme.Text)
     local closeBtn = CtrlBtn("✕", 2, Theme.Error)
 
-    -- minimise
     minBtn.MouseButton1Click:Connect(function()
         Window._minimized = not Window._minimized
         Tween(main, { Size = Window._minimized
@@ -271,15 +250,11 @@ function SiliconUI:CreateWindow(cfg)
         }, 0.35, Enum.EasingStyle.Back)
     end)
 
-    -- close
     closeBtn.MouseButton1Click:Connect(function()
         Tween(main, {Size=UDim2.fromOffset(0,0), BackgroundTransparency=1}, 0.38)
         task.delay(0.4, function() gui:Destroy() end)
     end)
 
-    ------------------------------------------------
-    -- DRAGGING
-    ------------------------------------------------
     do
         local dragging, dragInput, dragStart, startPos
         topBar.InputBegan:Connect(function(inp)
@@ -308,9 +283,6 @@ function SiliconUI:CreateWindow(cfg)
         end)
     end
 
-    ------------------------------------------------
-    -- CONTENT AREA
-    ------------------------------------------------
     local content = Make("Frame", {
         Name = "Content",
         BackgroundTransparency = 1,
@@ -320,14 +292,13 @@ function SiliconUI:CreateWindow(cfg)
         Parent   = main,
     })
 
-    -- tab sidebar
     local sidebar = Make("Frame", {
         BackgroundColor3 = Theme.Bg2,
         Size = UDim2.new(0, TAB_W, 1, 0),
         BorderSizePixel = 0,
         Parent = content,
     })
-    -- divider
+
     Make("Frame", {
         BackgroundColor3 = Theme.Divider,
         Size = UDim2.new(0,1,1,0),
@@ -336,7 +307,6 @@ function SiliconUI:CreateWindow(cfg)
         Parent = content,
     })
 
-    -- tab buttons scroll
     local tabScroll = Make("ScrollingFrame", {
         BackgroundTransparency = 1,
         Size = UDim2.new(1,0,1,0),
@@ -351,7 +321,6 @@ function SiliconUI:CreateWindow(cfg)
         tabScroll.CanvasSize = UDim2.fromOffset(0, tabList.AbsoluteContentSize.Y + 16)
     end)
 
-    -- page area
     local pageArea = Make("Frame", {
         BackgroundTransparency = 1,
         Position = UDim2.fromOffset(TAB_W+1, 0),
@@ -360,9 +329,6 @@ function SiliconUI:CreateWindow(cfg)
         Parent   = content,
     })
 
-    ------------------------------------------------
-    -- NOTIFICATIONS
-    ------------------------------------------------
     local notifHolder = Make("Frame", {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(1,1),
@@ -390,7 +356,6 @@ function SiliconUI:CreateWindow(cfg)
         })
         Corner(nf, 8); Stroke(nf, Theme.Border, 1, 0.55)
 
-        -- accent bar
         local bar = Make("Frame", {
             BackgroundColor3 = accent,
             Size = UDim2.new(0,3,0.65,0),
@@ -420,7 +385,6 @@ function SiliconUI:CreateWindow(cfg)
             Parent=nf,
         })
 
-        -- progress
         local pbg = Make("Frame", {
             BackgroundColor3=Theme.Divider,
             Size=UDim2.new(0.88,0,0,2),
@@ -441,9 +405,6 @@ function SiliconUI:CreateWindow(cfg)
         end)
     end
 
-    ------------------------------------------------
-    -- TAB FACTORY
-    ------------------------------------------------
     function Window:CreateTab(tcfg)
         tcfg = tcfg or {}
         local tabName = tcfg.Name or "Tab"
@@ -451,7 +412,6 @@ function SiliconUI:CreateWindow(cfg)
 
         local Tab = {}
 
-        -- button
         local tBtn = Make("TextButton", {
             BackgroundColor3       = Theme.Element,
             BackgroundTransparency = 1,
@@ -492,7 +452,6 @@ function SiliconUI:CreateWindow(cfg)
             BorderSizePixel=0, Parent=tBtn,
         }); Corner(indicator,2)
 
-        -- page
         local page = Make("ScrollingFrame", {
             BackgroundTransparency=1,
             Size=UDim2.new(1,0,1,0),
@@ -538,9 +497,6 @@ function SiliconUI:CreateWindow(cfg)
 
         if #Window._tabs == 1 then Select() end
 
-        --------------------------------------------------------
-        -- SECTION
-        --------------------------------------------------------
         function Tab:CreateSection(name)
             local sf = Make("Frame", {
                 BackgroundTransparency=1,
@@ -559,9 +515,6 @@ function SiliconUI:CreateWindow(cfg)
             })
         end
 
-        --------------------------------------------------------
-        -- LABEL
-        --------------------------------------------------------
         function Tab:CreateLabel(text)
             local lf = Make("Frame",{BackgroundColor3=Theme.Element,Size=UDim2.new(1,0,0,ELEM_H),Parent=page})
             Corner(lf,6)
@@ -576,9 +529,6 @@ function SiliconUI:CreateWindow(cfg)
             return obj
         end
 
-        --------------------------------------------------------
-        -- PARAGRAPH
-        --------------------------------------------------------
         function Tab:CreateParagraph(pcfg)
             pcfg=pcfg or {}
             local pf = Make("Frame",{BackgroundColor3=Theme.Element,Size=UDim2.new(1,0,0,62),ClipsDescendants=true,Parent=page})
@@ -613,9 +563,6 @@ function SiliconUI:CreateWindow(cfg)
             return obj
         end
 
-        --------------------------------------------------------
-        -- BUTTON
-        --------------------------------------------------------
         function Tab:CreateButton(bcfg)
             bcfg=bcfg or {}
             local bf = Make("TextButton",{
@@ -649,9 +596,6 @@ function SiliconUI:CreateWindow(cfg)
             bf.MouseButton1Click:Connect(bcfg.Callback or function()end)
         end
 
-        --------------------------------------------------------
-        -- TOGGLE
-        --------------------------------------------------------
         function Tab:CreateToggle(tcfg2)
             tcfg2=tcfg2 or {}
             local toggled = tcfg2.CurrentValue or false
@@ -699,9 +643,6 @@ function SiliconUI:CreateWindow(cfg)
             return obj
         end
 
-        --------------------------------------------------------
-        -- SLIDER
-        --------------------------------------------------------
         function Tab:CreateSlider(scfg)
             scfg=scfg or {}
             local sName = scfg.Name or"Slider"
@@ -797,9 +738,6 @@ function SiliconUI:CreateWindow(cfg)
             return obj
         end
 
-        --------------------------------------------------------
-        -- DROPDOWN
-        --------------------------------------------------------
         function Tab:CreateDropdown(dcfg)
             dcfg=dcfg or {}
             local dName  = dcfg.Name or"Dropdown"
@@ -886,7 +824,6 @@ function SiliconUI:CreateWindow(cfg)
                     Tween(ob,{BackgroundColor3=s and Theme.ElementHover or Theme.Bg3},0.15)
                 end
 
-                -- init highlight
                 if multi then if sel[n] then markSel(true) end
                 else if sel==n then markSel(true) end end
 
@@ -953,9 +890,6 @@ function SiliconUI:CreateWindow(cfg)
             return obj
         end
 
-        --------------------------------------------------------
-        -- INPUT
-        --------------------------------------------------------
         function Tab:CreateInput(icfg)
             icfg=icfg or {}
             local cb=icfg.Callback or function()end
@@ -1002,9 +936,6 @@ function SiliconUI:CreateWindow(cfg)
             return obj
         end
 
-        --------------------------------------------------------
-        -- KEYBIND
-        --------------------------------------------------------
         function Tab:CreateKeybind(kcfg)
             kcfg=kcfg or {}
             local curKey   = kcfg.CurrentKeybind or "None"
@@ -1053,9 +984,6 @@ function SiliconUI:CreateWindow(cfg)
             return obj
         end
 
-        --------------------------------------------------------
-        -- COLOR PICKER
-        --------------------------------------------------------
         function Tab:CreateColorPicker(ccfg)
             ccfg=ccfg or {}
             local col = ccfg.Color or Color3.new(1,1,1)
@@ -1086,7 +1014,6 @@ function SiliconUI:CreateWindow(cfg)
                 AnchorPoint=Vector2.new(0,0.5),Parent=cpBtn,
             }); Corner(preview,4); Stroke(preview,Theme.Border,1,0.5)
 
-            -- SV canvas
             local svCanvas = Make("Frame",{
                 BackgroundColor3=Color3.fromHSV(h,1,1),
                 Position=UDim2.fromOffset(12,ELEM_H+6),
@@ -1094,7 +1021,6 @@ function SiliconUI:CreateWindow(cfg)
                 ClipsDescendants=true,Parent=cf,
             }); Corner(svCanvas,4)
 
-            -- white → transparent (saturation)
             Make("UIGradient",{
                 Color=ColorSequence.new(Color3.new(1,1,1),Color3.new(1,1,1)),
                 Transparency=NumberSequence.new({
@@ -1103,7 +1029,6 @@ function SiliconUI:CreateWindow(cfg)
                 }),
                 Parent=svCanvas,
             })
-            -- transparent → black (value)  overlay
             local darkOverlay = Make("Frame",{
                 BackgroundColor3=Color3.new(0,0,0),
                 BackgroundTransparency=0,
@@ -1128,7 +1053,6 @@ function SiliconUI:CreateWindow(cfg)
                 ZIndex=3,Parent=svCanvas,
             }); Corner(svCur,6); Stroke(svCur,Color3.new(0,0,0),1.5,0)
 
-            -- hue bar
             local hueBar = Make("Frame",{
                 BackgroundColor3=Color3.new(1,1,1),
                 Position=UDim2.new(1,-32,0,ELEM_H+6),
@@ -1209,11 +1133,8 @@ function SiliconUI:CreateWindow(cfg)
         end
 
         return Tab
-    end -- CreateTab
+    end 
 
-    ------------------------------------------------
-    -- LOADING SCREEN
-    ------------------------------------------------
     local lo = Make("Frame",{
         Name="Loading",BackgroundColor3=Theme.Bg,
         Size=UDim2.new(1,0,1,0),ZIndex=50,Parent=main,
@@ -1254,16 +1175,10 @@ function SiliconUI:CreateWindow(cfg)
         lo:Destroy()
     end)
 
-    ------------------------------------------------
-    -- OPEN ANIMATION
-    ------------------------------------------------
     main.Size = UDim2.fromOffset(0,0)
     main.BackgroundTransparency = 1
     Tween(main,{Size=UDim2.fromOffset(WIN_W,WIN_H),BackgroundTransparency=0},0.5,Enum.EasingStyle.Back)
 
-    ------------------------------------------------
-    -- TOGGLE KEY
-    ------------------------------------------------
     UserInputService.InputBegan:Connect(function(i,gpe)
         if gpe then return end
         if i.KeyCode == toggleKey then
@@ -1271,9 +1186,6 @@ function SiliconUI:CreateWindow(cfg)
         end
     end)
 
-    ------------------------------------------------
-    -- DESTROY
-    ------------------------------------------------
     function Window:Destroy()
         Tween(main,{Size=UDim2.fromOffset(0,0),BackgroundTransparency=1},0.38)
         task.delay(0.4, function() gui:Destroy() end)
