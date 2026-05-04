@@ -1,0 +1,21 @@
+Last Updated: 4th May 2026
+
+-- Visuals
+- ESP (box/tracer/skeleton)
+
+-- Aimbot
+- AutoHold
+- FOV Circle
+- Keybind
+- Target Part
+- FOV Radius
+- Smoothness
+- Prediction
+
+-- Triggerbot
+- Fire Delay
+
+-- Rage
+- Space-To-Fly
+- NoClip
+- T to Teleport Behind Enemy
