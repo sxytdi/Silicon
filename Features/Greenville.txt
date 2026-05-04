@@ -1,0 +1,39 @@
+Last Updated: 4th May 2026
+
+-- Vehicle
+- Refuel Vehicle
+- Vehicle Fling
+- Vehicle Strobes
+- Vehicle Tire-Mark Spam
+- Vehicle Snow Spam
+- Anti-Flip
+- Vehicle Shaker
+- Lowrider Bounce
+- Speed Changer
+- Radar Detector
+- Grip Changer
+- AngleTweaker
+- Suspension Changer
+
+-- ECU
+- Horsepower 
+- Final Drive
+- Redline
+- Peak RPM
+- Unlock Automatic Gearbox (to manual)
+
+-- Visuals
+- Camera Lock
+- 0-60MPH Timer
+- Wheelie
+- Tilt Left
+- Tilt Right
+
+-- Autofarm
+- Sahara Autofarm
+
+-- Other
+- Anti-AFK
+- Server Crasher
+- FPS Unlocker
+- Show FPS
