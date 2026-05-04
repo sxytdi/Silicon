@@ -1,0 +1,21 @@
+Last Updated: 4th May 2026
+
+-- Vehicle
+- Vehicle Shaker
+- Speed Changer
+- Grip Changer
+- AngleTweaker
+- Suspension Changer
+
+-- Visuals
+- Camera Lock
+- 0-60MPH Timer
+
+-- Autofarm
+- RoSwift Autofarm
+
+-- Other
+- Anti-AFK
+- Server Crasher
+- FPS Unlocker
+- Show FPS
