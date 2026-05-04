@@ -1,0 +1,7 @@
+Last Updated: 4th May 2026
+
+-- Autofarm
+- Sahara Autofarm
+
+-- Other
+- Anti-AFK
