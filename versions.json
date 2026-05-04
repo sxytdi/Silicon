@@ -3,6 +3,6 @@
     "version": "1.2"
   },
   "executor": {
-    "version": "DISABLED"
+    "version": "0.2"
   }
 }
