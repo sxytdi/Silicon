@@ -1,7 +1,4 @@
 {
-  "external": {
-    "version": "1.4"
-  },
   "executor": {
     "version": "0.3"
   }
